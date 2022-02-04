@@ -35,8 +35,11 @@ const utilities = {
     booleanString(input, type) {
       return input ? type ? '是' : '真' : type ? '否' : '假';
     },
+    
+    //是否详细输出
     isDetailedOutput() {
-      return require('minimist')(process.argv.slice(2))['d'];
+      var args = require('minimist')(process.argv.slice(2));
+      return args['d'] || args['@j*9'];
     }
 }
 

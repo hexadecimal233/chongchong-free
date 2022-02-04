@@ -28,7 +28,7 @@ if (!args.i && !debug) {
 let musicID, saveDir, downloadPDF, downloadMP3 = null;
 
 //调试
-dbg = [917666, './output', true, true];
+dbg = [917666, './output', false, false];
 
 //音乐ID
 debug ? musicID = dbg[0] :
@@ -48,7 +48,7 @@ if(args.o && typeof(args.o) != 'string') {
 
 //保存路径
 debug ? saveDir = dbg[1] :
-saveDir = path.join(__dirname, args.o ? args.o : './output');
+saveDir = path.join(process.cwd(), args.o ? args.o : './output');
 
 //检测路径有效性
 if(!fs.existsSync(saveDir)) {
@@ -74,8 +74,7 @@ var fileName = '';
 let writeAndConvert = async (ccmzResolved) => {
     if (util.isDetailedOutput()) console.log('解析琴谱文件完成');
     if (debug) {
-        const ccmzJson = JSON.stringify(ccmzResolved);
-        fs.writeFileSync(`${saveDir}/${fileName}.json`, ccmzJson);
+        fs.writeFileSync(`${saveDir}/${fileName}.json`, ccmzResolved['midi']);
         if (util.isDetailedOutput()) console.log('转换为json并写出');
     }
     if (util.isDetailedOutput()) console.log('程序已结束');
