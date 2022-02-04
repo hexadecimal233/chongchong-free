@@ -1,4 +1,13 @@
-# 🐛虫虫钢琴下载器🎹
+<p align="center">
+<img src="./icon.png"/>
+</p>
+
+<div align="center">
+
+# 虫虫钢琴下载器
+
+![GitHub stars](https://img.shields.io/github/stars/ThebestkillerTBK/chongchong-free?style=flat)![GitHub stars](https://img.shields.io/github/forks/ThebestkillerTBK/chongchong-free?style=flat)
+</div>
 
 ## ❓介绍
 
@@ -22,3 +31,5 @@
 1) `-i <琴谱ID>`（必要）
 2) `-o <输出目录>`（可选）
 3) `-p <下载PDF>`（可选）
+4) `-m <输出MP3>`（可选）
+5) `-d <详细输出>`（可选）

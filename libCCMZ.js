@@ -1,7 +1,7 @@
 //解析CCMZ文件，来自Controller.js
 
-var JSZip = require('jszip');
-var util = require('./utilities');
+const JSZip = require('jszip');
+const util = require('./utils');
 
 //歌谱和midi
 class CCMZ {
@@ -9,7 +9,7 @@ class CCMZ {
   midi;
 }
 
-var libCCMZ = {
+const libCCMZ = {
   //下载CCMZ
   downloadCCMZ(url) {
     return util.httpget(url, '', true, '琴谱文件', false);

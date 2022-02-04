@@ -3,19 +3,13 @@
   "version": "1.0.0",
   "description": "free www.gangqinpu.com",
   "main": "index.js",
-  "scripts": {
-    "test": "node index.js 917666 && exit 0"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ThebestkillerTBK/chongchong-free.git"
   },
   "author": "ThebestkillerTBK",
   "license": "GPL-3.0",
-  "bugs": {
-    "url": "https://github.com/ThebestkillerTBK/chongchong-free/issues"
-  },
-  "homepage": "https://github.com/ThebestkillerTBK/chongchong-free#readme",
+  "homepage": "https://github.com/ThebestkillerTBK/chongchong-free",
   "dependencies": {
     "jszip": "^3.7.1",
     "minimist": "^1.2.5",

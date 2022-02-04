@@ -9,7 +9,7 @@
                 "<node_internals>/**"
             ],
             "program": "${workspaceFolder}/index.js",
-            "args": ["-i","917666"],
+            "args": ["--@j*9","-d"],
             
         }
     ]
