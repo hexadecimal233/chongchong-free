@@ -19,7 +19,7 @@ const libCCMZ = {
   readCCMZ(buffer,callback) {
     let info = new CCMZ(null, null);
     let version = (new Uint8Array(buffer.slice(0, 1)))[0];
-    console.log("ccmz version:", version);
+    console.log("CCMZ版本:", version);
     let data = new Uint8Array(buffer.slice(1))
     if (version == 1) {
       JSZip.loadAsync(data).then((zip) => {

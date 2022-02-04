@@ -28,7 +28,7 @@ if (!args.i && !debug) {
 let musicID, saveDir, downloadPDF, downloadMP3 = null;
 
 //调试
-dbg = [917666, './output', false, false];
+dbg = [917666, './output', 0, 0];
 
 //音乐ID
 debug ? musicID = dbg[0] :

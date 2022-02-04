@@ -17,7 +17,7 @@ const utilities = {
                 reject(error);
               }
             });
-          },200);
+          },0);
        });
     },
 

@@ -64,7 +64,7 @@ const ccApi = {
 
     //获取原作者
     parseTypename(json) {
-        return this.parseJsonInOpern(json, 'typename') + '(' + this.parseJsonInOpern(json, 'type_typename') + ')';
+        return this.parseJsonInOpern(json, 'typename');
     },
 
     //获取上传者
