@@ -55,7 +55,7 @@ let writeAndConvert = async (ccmzResolved) => {
     console.log('解析琴谱文件完成');
     const ccmzJson = JSON.stringify(ccmzResolved);
 
-    const fileName = 'test';
+    const fileName = 'testccmz';
 
     fs.writeFileSync(`${saveDir}/${fileName}.json`, ccmzJson)
     
