@@ -72,12 +72,20 @@ if (util.isDetailedOutput()) {
 var fileName = '';
 
 let writeAndConvert = async (ccmzResolved) => {
+    const ccmzObj = {
+        score = JSON.parse(ccmzResolved['score']),
+        midi = JSON.parse(ccmzResolved['midi'])
+    }
     if (util.isDetailedOutput()) console.log('解析琴谱文件完成');
     if (debug) {
-        fs.writeFileSync(`${saveDir}/${fileName}.json`, ccmzResolved['midi']);
+        fs.writeFileSync(`${saveDir}/${fileName}.json`, JSON.stringify(ccmzObj));
         if (util.isDetailedOutput()) console.log('转换为json并写出');
     }
+
+    const midFile = libCCMZ.CCMZmidToJson(ccmzObj);
+    fs.writeFileSync(`${saveDir}/${fileName}.mid`, midFile);
     if (util.isDetailedOutput()) console.log('程序已结束');
+
 }
 
 //////主程序//////
