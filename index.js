@@ -28,7 +28,8 @@ if (!args.i && !debug) {
 let musicID, saveDir, downloadPDF, downloadMP3 = null;
 
 //调试
-dbg = [917666, './output', 0, 0];
+//dbg = [892229, './output', 1, 0];
+dbg = [917666, './output', 1, 0];
 
 //音乐ID
 debug ? musicID = dbg[0] :
@@ -103,27 +104,30 @@ let getCCMZ = async () => {
     const ccmzLink = ccApi.parseCCMZurl(details);
     const MP3Link = ccApi.parseMP3url(details);
     const musicName = ccApi.parseName(details);
+    const musicNameEN = ccApi.parseNameEN(details);
     const authorcName = ccApi.parseAuthor(details);
     const typename = ccApi.parseTypename(details);
+    const paid = ccApi.parseIsPaid(details);
 
     fileName = musicName + '-' + musicID;
 
     if (util.isDetailedOutput()) { 
         console.log('解析了琴谱信息');
-        console.log(`音乐名: ${musicName}`);
+        console.log(`付费歌曲: ${util.booleanString(paid == '1', true)}`)
+        console.log(`音乐名: ${musicName} ${musicNameEN}`);
         console.log(`原作者: ${typename}`);
         console.log(`上传人: ${authorcName}`);
     }
 
     //下载PDF或MP3
     if (downloadMP3) {
-        fs.writeFileSync(`${saveDir}/${fileName}.mp3`,
-         await util.httpget(MP3Link, '', true, 'MP3', false));
+        if (MP3Link != '') fs.writeFileSync(`${saveDir}/${fileName}.mp3`, await util.httpget(MP3Link, '', true, 'MP3', false));
+        else console.log('无mp3可下载');
     }
 
     if (downloadPDF) {
-        fs.writeFileSync(`${saveDir}/${fileName}.pdf`,
-         await util.httpget(PDFlink, '', true, 'PDF', false));
+        if (PDFlink != '') fs.writeFileSync(`${saveDir}/${fileName}.pdf`, await util.httpget(PDFlink, '', true, 'PDF', false));
+        else console.log('无pdf可下载');
     }
 
     //开始下载并解析琴谱

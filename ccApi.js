@@ -37,8 +37,7 @@ const ccApi = {
             return jsonData['list'][node];
         }
         catch (e) {
-            console.log('json解析出错', e);
-            process.exit(1);
+            throw e;
         }
     },
 
@@ -59,7 +58,13 @@ const ccApi = {
 
     //获取歌曲名
     parseName(json) {
-        return this.parseJsonInOpern(json, 'name') + '(' + this.parseJsonInOpern(json, 'name_en') + ')';
+        return this.parseJsonInOpern(json, 'name');
+    },
+
+    //获取英文歌曲名
+    parseNameEN(json) {
+        const nameEN = this.parseJsonInOpern(json, 'name_en');
+        return (nameEN == '' ? '' : `(英文名: ${nameEN})`);
     },
 
     //获取原作者
@@ -70,6 +75,11 @@ const ccApi = {
     //获取上传者
     parseAuthor(json) {
         return this.parseJsonInOpern(json, 'author');
+    },
+
+    //获取付费
+    parseIsPaid(json) {
+        return this.parseJsonInOpern(json, 'is_pay');
     }
 }
 

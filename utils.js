@@ -2,6 +2,7 @@ const needle = require('needle');
 
 const utilities = {
     promiseGet(url, params, raw, name, showResp) {
+      if (url == '') throw new Error('url不能留空');
       if (this.isDetailedOutput()) console.log(`开始获取${name} (${url})`);
       return new Promise((resolve, reject) => {
           setTimeout( () => {
@@ -13,11 +14,11 @@ const utilities = {
                 }
                 raw ? resolve(response.raw) : resolve(response.body);
               } else {
-                console.log(`无法获取${name}: `, error, response.statusCode);
+                console.log(`无法获取${name}: `, error);
                 reject(error);
               }
             });
-          },0);
+          },100);
        });
     },
 
@@ -26,7 +27,7 @@ const utilities = {
       let p = null;
       await this.promiseGet(url, params, raw, name, showResp)
         .then((res)=>{p = res;})
-        .catch((err) => {process.exit(1);});
+        .catch((err) => {throw err;});
       return p;
     },
 

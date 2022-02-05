@@ -61,6 +61,7 @@ const libCCMZ = {
 
   //转换为MID文件
   CCMZmidToJson(input) {
+    //const
     return 'error';
   }
 }
