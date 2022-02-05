@@ -1,7 +1,6 @@
-//解析CCMZ文件，来自Controller.js
-
 const JSZip = require('jszip');
 const util = require('./utils');
+var MidiWriter = require('midi-writer-js');
 
 //歌谱和midi
 class CCMZ {
@@ -15,7 +14,7 @@ const libCCMZ = {
     return util.httpget(url, '', true, '琴谱文件', false);
   },
 
-  //解析CCMZ
+  //解析CCMZ文件，来自Controller.js
   readCCMZ(buffer,callback) {
     let info = new CCMZ(null, null);
     let version = (new Uint8Array(buffer.slice(0, 1)))[0];
@@ -60,9 +59,18 @@ const libCCMZ = {
   },
 
   //转换为MID文件
-  CCMZmidToJson(input) {
-    //const
-    return 'error';
+  writeMIDI(input,outputFile) {
+    var tracks = new Array();
+    for (track in input['tracks']) {
+      var currTrack = new MidiWriter.Track();
+      currTrack.addEvent(new MidiWriter.ProgramChangeEvent({instrument: 1}));
+      tracks.push(currTrack);
+    }
+    //var note = new MidiWriter.NoteEvent({pitch: ['C4', 'D4', 'E4'], duration: '4'});
+    //track.addEvent(note);
+    var write = new MidiWriter.Writer(tracks);
+    require('fs').writeFileSync(outputFile, write.buildFile())
+    console.log('成功写出MIDI文件');
   }
 }
 

@@ -19,7 +19,7 @@ if (!args.i && !debug) {
     console.log('chongchong-free by ThebestkillerTBK\n     免费下载虫虫钢琴曲谱并解密');
     console.log('-i 琴谱ID');
     console.log('-o 输出目录（可选），默认为output');
-    console.log('-p 输出PDF（可选），默认不输出');
+    console.log('-p 输出原始PDF（可选），默认不输出');
     console.log('-m 输出MP3（可选），默认不输出');
     console.log('-d 详细输出（可选），默认为关');
     return 1;
@@ -28,8 +28,8 @@ if (!args.i && !debug) {
 let musicID, saveDir, downloadPDF, downloadMP3 = null;
 
 //调试
-//dbg = [892229, './output', 1, 0];
-dbg = [917666, './output', 1, 0];
+//dbg = [892229, './output', 1, 0];//paid
+dbg = [917666, './output', 1, 0];//no pay
 
 //音乐ID
 debug ? musicID = dbg[0] :
@@ -83,8 +83,7 @@ let writeAndConvert = async (ccmzResolved) => {
         if (util.isDetailedOutput()) console.log('转换为json并写出');
     }
 
-    const midFile = libCCMZ.CCMZmidToJson(ccmzObj);
-    fs.writeFileSync(`${saveDir}/${fileName}.mid`, midFile);
+    libCCMZ.writeMIDI(ccmzObj['midi'], `${saveDir}/${fileName}.mid`);
     if (util.isDetailedOutput()) console.log('程序已结束');
 
 }
@@ -109,7 +108,7 @@ let getCCMZ = async () => {
     const typename = ccApi.parseTypename(details);
     const paid = ccApi.parseIsPaid(details);
 
-    fileName = musicName + '-' + musicID;
+    fileName = musicName.replace(/[/\\:\|\*\?"<>]/g," ") + '-' + musicID;
 
     if (util.isDetailedOutput()) { 
         console.log('解析了琴谱信息');
@@ -127,7 +126,7 @@ let getCCMZ = async () => {
 
     if (downloadPDF) {
         if (PDFlink != '') fs.writeFileSync(`${saveDir}/${fileName}.pdf`, await util.httpget(PDFlink, '', true, 'PDF', false));
-        else console.log('无pdf可下载');
+        else console.log('无原始pdf可下载');
     }
 
     //开始下载并解析琴谱
