@@ -1,6 +1,6 @@
 {
   "name": "chongchong-free",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "free www.gangqinpu.com",
   "main": "index.js",
   "repository": {
@@ -12,14 +12,15 @@
   "homepage": "https://github.com/ThebestkillerTBK/chongchong-free",
   "dependencies": {
     "jszip": "^3.7.1",
+    "midi-writer-js": "^2.0.1",
     "minimist": "^1.2.5",
     "needle": "^3.0.0",
     "pkg": "^5.5.2",
     "tonal-midi": "^0.69.7"
   },
-  "bin":"index.js",
+  "bin": "index.js",
   "scripts": {
     "run": "node index.js --dbg",
     "build": "pkg . --targets node14-win-x64,node14-macos-x64,node14-linux-x64 -o ./dist/chongchong-free"
- }
+  }
 }

@@ -40,6 +40,8 @@
 
 ## ✔注意事项
 
-⭐如果喜欢的话请帮忙star一下！⭐
+⭐ 如果喜欢的话请帮忙star支持一下！
 
-部分代码在<https://github.com/ThebestkillerTBK/MidiWriterJS>上
+🐛 有Bug可以开Issue或PR
+
+**[这里看更新日志](changelog.txt)**
