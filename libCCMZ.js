@@ -73,20 +73,12 @@ const libCCMZ = {
       tracks.push(currTrack);
     }
 
-    //速度和节拍
+    //速度
     for(t in input['tempos']) {
       var tempo = input['tempos'][parseInt(t)];
       for (_t in tracks) {
         var track = tracks[parseInt(_t)];
         track.setTempo(Math.round(60000000 / tempo['tempo'] * 4), tempo['tick']);
-      }
-    }
-
-    for(b in input['beatInfos']) {
-      var beat = input['beatInfos'][parseInt(b)];
-      for (t in tracks) {
-        var track = tracks[parseInt(t)];
-        currTrack.setTimeSignature(beat['beats'], beat['beatsUnit'], beat['tick']);
       }
     }
 
@@ -98,7 +90,7 @@ const libCCMZ = {
       }
       var note = new MidiWriter.NoteEvent({
         velocity: 80,
-        pitch: event['event'],
+        pitch: [event['event'][1]],
         duration: "T" + event['duration'],
         startTick: event['tick'],
       });
