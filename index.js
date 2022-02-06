@@ -28,7 +28,7 @@ if (!args.i && !debug) {
 let musicID, saveDir, downloadPDF, downloadMP3 = null;
 
 //调试  musicID, saveDir, downloadPDF, downloadMP3
-dbg = [0, './output', 0, 0];
+dbg = [0, './output', 0, 0];//测试的音乐
 
 //音乐ID
 debug ? musicID = dbg[0] :
@@ -71,18 +71,23 @@ if (util.isDetailedOutput()) {
 var fileName = '';
 
 let writeAndConvert = async (ccmzResolved) => {
-    const ccmzObj = {
-        score : JSON.parse(ccmzResolved['score']),
-        midi : JSON.parse(ccmzResolved['midi'])
+    if (ccmzResolved['ver'] == 2) {
+        const ccmzObj = {
+            score : JSON.parse(ccmzResolved['score']),
+            midi : JSON.parse(ccmzResolved['midi'])
+        }
+        if (util.isDetailedOutput()) console.log('解析琴谱文件完成');
+        if (debug) {
+            fs.writeFileSync(`${saveDir}/${fileName}.json`, JSON.stringify(ccmzObj,"","\t"));
+            if (util.isDetailedOutput()) console.log('转换为json并写出');
+        }
+        if (util.isDetailedOutput()) console.log('解析MIDI');
+        libCCMZ.writeMIDI(ccmzObj['midi'], `${saveDir}/${fileName}.mid`);
+    } else {
+        fs.writeFileSync(`${saveDir}/${fileName}.mid`, midi);
     }
-    if (util.isDetailedOutput()) console.log('解析琴谱文件完成');
-    if (debug) {
-        fs.writeFileSync(`${saveDir}/${fileName}.json`, JSON.stringify(ccmzObj,"","\t"));
-        if (util.isDetailedOutput()) console.log('转换为json并写出');
-    }
-
-    libCCMZ.writeMIDI(ccmzObj['midi'], `${saveDir}/${fileName}.mid`);
-
+    
+    if (util.isDetailedOutput()) console.log('成功写出MIDI文件');
     console.log('下载成功!');
     if (util.isDetailedOutput()) console.log('程序已结束');
 
