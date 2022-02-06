@@ -28,7 +28,7 @@ if (!args.i && !debug) {
 let musicID, saveDir, downloadPDF, downloadMP3 = null;
 
 //调试
-//dbg = [892229, './output', 1, 0];//paid
+//bg = [892229, './output', 0, 0];//paid
 dbg = [917666, './output', 0, 0];//no pay
 
 //音乐ID
@@ -65,8 +65,7 @@ debug ? downloadMP3 = dbg[3] :
 downloadMP3 = args.m;
 
 if (util.isDetailedOutput()) {
-    console.log(`琴谱ID: ${musicID}    输出目录: ${saveDir}\n生成PDF: ${util.booleanString(downloadPDF, true)}    生成MP3: ${util.booleanString(downloadMP3, true)}`);
-    console.log('·开启详细信息模式');
+    console.log(`琴谱ID: ${musicID}    输出目录: ${saveDir}\n生成PDF: ${util.booleanString(downloadPDF, true)}       生成MP3: ${util.booleanString(downloadMP3, true)}`);
 }
 
 //初始化保存的文件名

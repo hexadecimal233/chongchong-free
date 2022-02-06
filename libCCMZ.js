@@ -63,12 +63,16 @@ const libCCMZ = {
     //初始化音轨
     var tracks = new Array();
     for (t in input['tracks']) {
-      var baseTempo = input['tempos'][0]['tempo'];
+      var trackOrig = input['tracks'][parseInt(t)];
+      var baseTempo = input['tempos'][0]['tempo'] / input['beats'];
       var currTrack = new MidiWriter.Track();
       //乐器是钢琴
       currTrack.addEvent(new MidiWriter.ProgramChangeEvent({instrument: 1}));
       //基本速度
-      currTrack.setTempo(parseInt(baseTempo));
+      currTrack.setTempo(Math.round(60000000 / baseTempo));
+      //名字
+      var name = trackOrig['name'] != '' ? trackOrig['name'] : 'Unamned';
+      currTrack.addTrackName(name)
       tracks.push(currTrack);
     }
 
@@ -82,10 +86,10 @@ const libCCMZ = {
         velocity: 80,
         pitch: event['event'],
         duration: "T" + event['duration'],
-        startTick: parseInt(event['tick']),
+        startTick: event['tick'],
       });
 
-      var trackID = parseInt(event['track']);
+      var trackID = event['staff'] - 1;
       tracks[trackID].addEvent(note);
     }
 
