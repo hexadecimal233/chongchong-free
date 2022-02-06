@@ -27,10 +27,13 @@ if (!args.i && !debug) {
 
 let musicID, saveDir, downloadPDF, downloadMP3 = null;
 
-//调试
+//调试  musicID, saveDir, downloadPDF, downloadMP3
 //dbg = [892229, './output', 0, 0];//paid
+//dbg = [934819, './output', 0, 0];//paid
+//dbg = [922226, './output', 0, 0];//paid
 //dbg = [917666, './output', 0, 0];//no pay
-dbg = [1004503, './output', 0, 0];
+//dbg = [1004503, './output', 0, 0];
+dbg = [1016933, './output', 0, 0];
 
 //音乐ID
 debug ? musicID = dbg[0] :
@@ -84,6 +87,8 @@ let writeAndConvert = async (ccmzResolved) => {
     }
 
     libCCMZ.writeMIDI(ccmzObj['midi'], `${saveDir}/${fileName}.mid`);
+
+    console.log('下载成功!');
     if (util.isDetailedOutput()) console.log('程序已结束');
 
 }
@@ -98,43 +103,52 @@ let getCCMZ = async () => {
     opernID = await ccApi.getOpernID(musicID);
     details = await ccApi.getDetails(opernID);
 
+    if (util.isDetailedOutput()) console.log('开始解析信息');
+    var detailsJSON = JSON.parse(details)['list'];
+
     //解析json
-    const PDFlink = ccApi.parsePDFurl(details);
-    const ccmzLink = ccApi.parseCCMZurl(details);
-    const MP3Link = ccApi.parseMP3url(details);
-    const musicName = ccApi.parseName(details);
-    const musicNameEN = ccApi.parseNameEN(details);
-    const authorcName = ccApi.parseAuthor(details);
-    const typename = ccApi.parseTypename(details);
-    const paid = ccApi.parseIsPaid(details);
+    const PDFlink = detailsJSON['pdf'];//解析PDF链接
+    const ccmzLink = detailsJSON['audition_midi'];//解析CCMZ链接
+    const MP3Link = detailsJSON['audition_urtext'];//解析MP3链接
+    const musicName = detailsJSON['name'];//获取歌曲名
+    const authorcName = detailsJSON['author'];//获取上传者
+    const typename = detailsJSON['typename'];//获取原作者
+    const paid = detailsJSON['is_pay'];//获取付费
 
     fileName = musicName.replace(/[/\\:\|\*\?"<>]/g," ") + '-' + musicID;
 
-    if (util.isDetailedOutput()) { 
-        console.log('解析了琴谱信息');
-        console.log(`付费歌曲: ${util.booleanString(paid == '1', true)}`)
-        console.log(`音乐名: ${musicName} ${musicNameEN}`);
-        console.log(`原作者: ${typename}`);
-        console.log(`上传人: ${authorcName}`);
-    }
+    console.log('解析了琴谱信息');
+    console.log(`付费歌曲: ${util.booleanString(paid == '1', true)}`)
+    console.log(`音乐名: ${musicName}`);
+    console.log(`原作者: ${typename}`);
+    console.log(`上传人: ${authorcName}`);
 
+    
     //下载PDF或MP3
     if (downloadMP3) {
+        if (util.isDetailedOutput()) console.log('下载MP3');
         if (MP3Link != '') fs.writeFileSync(`${saveDir}/${fileName}.mp3`, await util.httpget(MP3Link, '', true, 'MP3', false));
         else console.log('无mp3可下载');
     }
 
     if (downloadPDF) {
+        if (util.isDetailedOutput()) console.log('下载PDF');
         if (PDFlink != '') fs.writeFileSync(`${saveDir}/${fileName}.pdf`, await util.httpget(PDFlink, '', true, 'PDF', false));
         else console.log('无原始pdf可下载');
     }
 
-    //开始下载并解析琴谱
-    ccmzRaw = await libCCMZ.downloadCCMZ(ccmzLink);
+    if (ccmzLink != '') {
+        if (util.isDetailedOutput()) console.log('开始下载并解析琴谱');
+        ccmzRaw = await libCCMZ.downloadCCMZ(ccmzLink);
 
-    //开始写出，转换CCMZ
-    if (util.isDetailedOutput()) console.log('开始解析琴谱文件');
-    libCCMZ.readCCMZ(ccmzRaw, writeAndConvert);
+        //开始写出，转换CCMZ
+        if (util.isDetailedOutput()) console.log('开始解析琴谱文件');
+        libCCMZ.readCCMZ(ccmzRaw, writeAndConvert);
+    } else {
+        console.log('无MIDI可下载');
+        if (util.isDetailedOutput()) console.log('程序已结束');
+    }
+
 }
 //////主程序//////
 

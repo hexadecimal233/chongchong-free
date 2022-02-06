@@ -92,7 +92,7 @@ const libCCMZ = {
         velocity: 80,
         pitch: [event['event'][1]],
         duration: "T" + event['duration'],
-        startTick: event['tick'],
+        startTick: event['tick'] == 0 ? 1 : event['tick'],
       });
 
       var trackID = event['staff'] - 1;
@@ -101,14 +101,23 @@ const libCCMZ = {
 
 
     //写出
-    console.log('开始写出MIDI文件');
+    if (util.isDetailedOutput()) console.log('开始写出MIDI文件');
     var write = new MidiWriter.Writer(tracks);
     require('fs').writeFileSync(outputFile, write.buildFile());
-    console.log('成功写出MIDI文件');
+    if (util.isDetailedOutput()) console.log('成功写出MIDI文件');
   }
 }
 
+module.exports = libCCMZ;
+
 //MIDI类
+
+class MeasureInfo {
+  beats;//拍子
+  number;//序号
+  fifths;//升降调
+  beatUnit;//拍子
+}
 
 class Event {
   tick;//时间
@@ -160,9 +169,7 @@ class MIDI {
   tempos;//变速
   tracks;//音轨
   measures;//小节
-  measureInfos;//未知
+  measureInfos;//小节信息
   lyrics;//歌词
   events;//midi的event
 }
-
-module.exports = libCCMZ;

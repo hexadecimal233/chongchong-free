@@ -28,58 +28,6 @@ const ccApi = {
         }
         
         return util.httpget(getBalanceListApi+url1, params, false, '琴谱信息', false);
-    },
-
-    //解析json
-    parseJsonInOpern(json, node) {
-        try {
-            const jsonData = JSON.parse(json);
-            return jsonData['list'][node];
-        }
-        catch (e) {
-            throw e;
-        }
-    },
-
-    //解析CCMZ链接
-    parseCCMZurl(json) {
-        return this.parseJsonInOpern(json, 'audition_midi');
-    },
-
-    //解析PDF链接
-    parsePDFurl(json) {
-        return this.parseJsonInOpern(json, 'pdf');
-    },
-
-    //解析MP3链接
-    parseMP3url(json) {
-        return this.parseJsonInOpern(json, 'audition_urtext');
-    },
-
-    //获取歌曲名
-    parseName(json) {
-        return this.parseJsonInOpern(json, 'name');
-    },
-
-    //获取英文歌曲名
-    parseNameEN(json) {
-        const nameEN = this.parseJsonInOpern(json, 'name_en');
-        return (nameEN == '' ? '' : `(英文名: ${nameEN})`);
-    },
-
-    //获取原作者
-    parseTypename(json) {
-        return this.parseJsonInOpern(json, 'typename');
-    },
-
-    //获取上传者
-    parseAuthor(json) {
-        return this.parseJsonInOpern(json, 'author');
-    },
-
-    //获取付费
-    parseIsPaid(json) {
-        return this.parseJsonInOpern(json, 'is_pay');
     }
 }
 
