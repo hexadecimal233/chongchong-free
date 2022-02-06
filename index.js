@@ -12,7 +12,7 @@ const fs = require('fs');
 
 //解析参数
 var args = require('minimist')(process.argv.slice(2));
-debug = args['@j*9'];
+debug = args['dbg'];
 
 //显示帮助
 if (!args.i && !debug) {

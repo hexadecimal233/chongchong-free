@@ -40,7 +40,7 @@ const utilities = {
     //是否详细输出
     isDetailedOutput() {
       var args = require('minimist')(process.argv.slice(2));
-      return args['d'] || args['@j*9'];
+      return args['d'] || args['dbg'];
     }
 }
 
