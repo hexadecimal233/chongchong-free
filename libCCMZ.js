@@ -64,22 +64,36 @@ const libCCMZ = {
     var tracks = new Array();
     for (t in input['tracks']) {
       var trackOrig = input['tracks'][parseInt(t)];
-      var baseTempo = input['tempos'][0]['tempo'] / input['beats'];
       var currTrack = new MidiWriter.Track();
       //乐器是钢琴
       currTrack.addEvent(new MidiWriter.ProgramChangeEvent({instrument: 1}));
-      //基本速度
-      currTrack.setTempo(Math.round(60000000 / baseTempo));
       //名字
       var name = trackOrig['name'] != '' ? trackOrig['name'] : 'Unamned';
       currTrack.addTrackName(name)
       tracks.push(currTrack);
     }
 
+    //速度和节拍
+    for(t in input['tempos']) {
+      var tempo = input['tempos'][parseInt(t)];
+      for (_t in tracks) {
+        var track = tracks[parseInt(_t)];
+        track.setTempo(Math.round(60000000 / tempo['tempo'] * 4), tempo['tick']);
+      }
+    }
+
+    for(b in input['beatInfos']) {
+      var beat = input['beatInfos'][parseInt(b)];
+      for (t in tracks) {
+        var track = tracks[parseInt(t)];
+        currTrack.setTimeSignature(beat['beats'], beat['beatsUnit'], beat['tick']);
+      }
+    }
+
     //添加note
     for(e in input['events']) {
       var event = input['events'][parseInt(e)];
-      if (event['duration'] == 0) {
+      if (event['duration'] == 0 || !event['staff']) {
         continue;
       }
       var note = new MidiWriter.NoteEvent({
@@ -95,8 +109,9 @@ const libCCMZ = {
 
 
     //写出
+    console.log('开始写出MIDI文件');
     var write = new MidiWriter.Writer(tracks);
-    require('fs').writeFileSync(outputFile, write.buildFile())
+    require('fs').writeFileSync(outputFile, write.buildFile());
     console.log('成功写出MIDI文件');
   }
 }

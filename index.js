@@ -28,8 +28,8 @@ if (!args.i && !debug) {
 let musicID, saveDir, downloadPDF, downloadMP3 = null;
 
 //调试
-//bg = [892229, './output', 0, 0];//paid
-dbg = [917666, './output', 0, 0];//no pay
+dbg = [892229, './output', 0, 0];//paid
+//dbg = [917666, './output', 0, 0];//no pay
 
 //音乐ID
 debug ? musicID = dbg[0] :
