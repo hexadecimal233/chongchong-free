@@ -29,7 +29,7 @@ let musicID, saveDir, downloadPDF, downloadMP3 = null;
 
 //调试
 //dbg = [892229, './output', 1, 0];//paid
-dbg = [917666, './output', 1, 0];//no pay
+dbg = [917666, './output', 0, 0];//no pay
 
 //音乐ID
 debug ? musicID = dbg[0] :
