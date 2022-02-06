@@ -12,8 +12,8 @@
   "homepage": "https://github.com/ThebestkillerTBK/chongchong-free",
   "dependencies": {
     "jszip": "^3.7.1",
-    "midi-writer-js": "^2.0.1",
     "minimist": "^1.2.5",
-    "needle": "^3.0.0"
+    "needle": "^3.0.0",
+    "tonal-midi": "^0.69.7"
   }
 }

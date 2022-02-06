@@ -1,6 +1,6 @@
 const JSZip = require('jszip');
 const util = require('./utils');
-var MidiWriter = require('midi-writer-js');
+var MidiWriter = require('./midi-writer-js');//源代码在https://github.com/ThebestkillerTBK/MidiWriterJS
 
 //歌谱和midi
 class CCMZ {
