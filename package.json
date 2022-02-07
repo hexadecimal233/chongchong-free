@@ -21,6 +21,7 @@
   "bin": "index.js",
   "scripts": {
     "run": "node index.js --dbg",
-    "build": "pkg . --targets node14-win-x64,node14-macos-x64,node14-linux-x64 -o ./dist/chongchong-free"
+    "build": "pkg . --targets node14-win-x64,node14-macos-x64,node14-linux-x64 -o ./dist/chongchong-free",
+    "ccmz-test": "node test.js"
   }
 }

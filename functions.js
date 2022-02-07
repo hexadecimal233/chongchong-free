@@ -8,7 +8,8 @@ var args = require('minimist')(process.argv.slice(2));
 debug = args['dbg'];
 
 //初始化保存的文件名
-var fileName, _saveDir = 'test';
+var fileName = 'test';
+var  _saveDir = './output';
 
 let writeAndConvert = async (ccmzResolved) => {
     if (ccmzResolved['ver'] == 2) {
@@ -24,7 +25,7 @@ let writeAndConvert = async (ccmzResolved) => {
         if (util.isDetailedOutput()) console.log('解析MIDI');
         libCCMZ.writeMIDI(ccmzObj['midi'], `${_saveDir}/${fileName}.mid`);
     } else {
-        fs.writeFileSync(`${_saveDir}/${fileName}.mid`, midi);
+        fs.writeFileSync(`${_saveDir}/${fileName}.mid`, ccmzResolved['midi']);
     }
     
     if (util.isDetailedOutput()) console.log('成功写出MIDI文件');
@@ -93,4 +94,4 @@ let getCCMZ = async (musicID, saveDir, downloadMP3, downloadPDF) => {
 }
 //////主程序//////
 
-module.exports = { getCCMZ };
+module.exports = { getCCMZ, writeAndConvert };

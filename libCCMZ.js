@@ -17,7 +17,7 @@ const libCCMZ = {
 
   //解析CCMZ文件，来自Controller.js
   readCCMZ(buffer,callback) {
-    let info = new CCMZ(null, null);
+    let info = new CCMZ();
     let version = (new Uint8Array(buffer.slice(0, 1)))[0];
     console.log("CCMZ版本:", version);
     info.ver = version;
@@ -88,9 +88,16 @@ const libCCMZ = {
       //基本速度
       currTrack.setTempo(Math.round(60000000 / baseTempo), 0);
       
+      let globalOffset = 0;
+      let lastEvent;
       //添加note
       for(ev in input['events']) {
         let event = input['events'][parseInt(ev)];
+        if (parseInt(ev) != 0) {
+          lastEvent = input['events'][parseInt(ev) - 1];
+        } else {
+          lastEvent = event;
+        }
         //删除不必要音符
         if (event['duration'] == 0 || !event['staff']) {
           continue;
@@ -109,36 +116,36 @@ const libCCMZ = {
         let multiplier1 = 1;
         if (tickPos != 0) {
           let thisTick = ticksTemp[tickPos-1];
+          let lastTempo = baseTempo;
           for(tpo in input['tempos']) {
-            var tick = input['tempos'][parseInt(tpo)]['tick'];
+            let _tpo = parseInt(tpo);
+            var tick = input['tempos'][_tpo]['tick'];
+            if (_tpo != 0) {
+              lastTempo = input['tempos'][_tpo-1]['tempo'];
+            }
+            currTempo = input['tempos'][_tpo]['tempo'];
             /*
-            let legitDuration = 0;
-            let thisDuration = event['duration'];
-            let legitLimit = event['duration'];
-            if (parseInt(tpo)+1 < input['tempos'].length) {
-              legitLimit = input['tempos'][parseInt(tpo)]['tick'] - input['tempos'][parseInt(tpo)+1]['tick'];
-            }
-            while(thisDuration > 0) {
-              if (thisDuration < legitLimit) {
-                legitDuration = thisDuration;
-                break;
-              }
-              thisDuration--;
-            }*/
-            if (tick = thisTick) {//tick < thisTick && thisTick - tick < legitDuration
-              currTempo = input['tempos'][parseInt(tpo)]['tempo'];
-              multiplier1 = baseTempo / currTempo; //*= baseTempo / currTempo;
-            }
+            if (tick < thisTick) {
+              multiplier1 *= lastTempo / currTempo;
+            } */
+            if (tick = thisTick) {
+              multiplier1 = baseTempo / currTempo;
+            } else break;
           }
         }
+
         ticksTemp.splice(tickPos, 1);
         let multiplier = baseMultiplier / multiplier1;
+        let tickDelta = event['tick'] - lastEvent['tick'];
+        globalOffset += tickDelta * (multiplier1);
+        if (event['tick'] + globalOffset < 0) globalOffset = 0;
         let note = new MidiWriter.NoteEvent({
           velocity: 80,
           pitch: [event['event'][1]],
           duration: "T" + event['duration'] * multiplier,
-          startTick:  event['tick'] * multiplier,
+          startTick: event['tick'] * multiplier,//globadOffset
         });
+
 
         let trackID = event['staff'] - 1;
         if (parseInt(t) == trackID) {

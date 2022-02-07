@@ -1,10 +1,19 @@
 {
     "version": "0.2.0",
     "configurations": [
+    {
+        "name": "CCMZ Test",
+        "program": "${workspaceFolder}/test.js",
+        "request": "launch",
+        "skipFiles": [
+            "<node_internals>/**"
+        ],
+        "type": "pwa-node"
+    },
         {
             "type": "pwa-node",
             "request": "launch",
-            "name": "Launch Program",
+            "name": "debug",
             "skipFiles": [
                 "<node_internals>/**"
             ],
