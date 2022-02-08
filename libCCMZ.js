@@ -63,16 +63,14 @@ const libCCMZ = {
   //转换为MID文件
   writeMIDI(input,outputFile) {
     const baseMultiplier = 0.25;
-    //速度
+    //速度tick tempo
     let tempoTicks = new Array();
     for(tpo in input['tempos']) {
       var tick = input['tempos'][parseInt(tpo)]['tick'];
       tempoTicks.push(tick);
     }
-    tempoTicks.sort((o, j) => {
-      return o - j;
-    });
     const baseTempo = input['tempos'][0]['tempo'];
+
     //初始化音轨
     var tracks = new Array();
     for (t in input['tracks']) {
@@ -89,33 +87,42 @@ const libCCMZ = {
       currTrack.setTempo(Math.round(60000000 / baseTempo), 0);
       
       let globalOffset = 0;
-      let lastEvent;
+
       //添加note
       for(ev in input['events']) {
         let event = input['events'][parseInt(ev)];
-        if (parseInt(ev) != 0) {
-          lastEvent = input['events'][parseInt(ev) - 1];
-        } else {
-          lastEvent = event;
-        }
         //删除不必要音符
         if (event['duration'] == 0 || !event['staff']) {
+          event['validEvent'] = false;
           continue;
+        } else {
+          event['validEvent'] = true;
         }
+
+        //0tick问题
         if (event['tick'] == 0) {
           event['tick'] = 1;
         } 
 
-        let ticksTemp = tempoTicks;
-        ticksTemp.push(event['tick']);
-        ticksTemp.sort((o, j) => {
+        //上一个event
+        let lastValidEvent = event;
+        for (let _ev = parseInt(ev); _ev > 0; _ev--) {
+          if (input['events'][_ev-1]['validEvent'] == true) {
+            lastValidEvent = input['events'][_ev-1];
+            break;
+          }
+        }
+
+
+        tempoTicks.push(event['tick']);
+        tempoTicks.sort((o, j) => {
           return o - j;
         });
-        let tickPos = ticksTemp.indexOf(event['tick']);
+        let tickPos = tempoTicks.indexOf(event['tick']);
         let currTempo = baseTempo;
-        let multiplier1 = 1;
+        let mDuration, mTick = 1;
         if (tickPos != 0) {
-          let thisTick = ticksTemp[tickPos-1];
+          let thisTick = tempoTicks[tickPos-1];
           let lastTempo = baseTempo;
           for(tpo in input['tempos']) {
             let _tpo = parseInt(tpo);
@@ -124,26 +131,22 @@ const libCCMZ = {
               lastTempo = input['tempos'][_tpo-1]['tempo'];
             }
             currTempo = input['tempos'][_tpo]['tempo'];
-            /*
-            if (tick < thisTick) {
-              multiplier1 *= lastTempo / currTempo;
-            } */
             if (tick = thisTick) {
-              multiplier1 = baseTempo / currTempo;
+              mDuration = baseMultiplier * lastTempo / currTempo;
+              mTick = baseMultiplier * lastTempo / currTempo;
             } else break;
           }
         }
 
-        ticksTemp.splice(tickPos, 1);
-        let multiplier = baseMultiplier / multiplier1;
-        let tickDelta = event['tick'] - lastEvent['tick'];
-        globalOffset += tickDelta * (multiplier1);
+        tempoTicks.splice(tickPos, 1);
+        let tickDelta = event['tick'] - lastValidEvent['tick'];
+        globalOffset += tickDelta * mTick;
         if (event['tick'] + globalOffset < 0) globalOffset = 0;
         let note = new MidiWriter.NoteEvent({
           velocity: 80,
           pitch: [event['event'][1]],
-          duration: "T" + event['duration'] * multiplier,
-          startTick: event['tick'] * multiplier,//globadOffset
+          duration: "T" + event['duration'] * mDuration,
+          startTick: globalOffset,//globadOffset
         });
 
 
