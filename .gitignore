@@ -2,7 +2,7 @@ output/*
 dist
 package-lock.json
 yarn.lock
-test.json
+test*.json
 
 # Logs
 logs
