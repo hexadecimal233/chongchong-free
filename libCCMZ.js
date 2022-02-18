@@ -131,7 +131,7 @@ const libCCMZ = {
               lastTempo = input['tempos'][_tpo-1]['tempo'];
             }
             currTempo = input['tempos'][_tpo]['tempo'];
-            if (tick = thisTick) {
+            if (tick === thisTick) {
               mDuration = baseMultiplier * lastTempo / currTempo;
               mTick = baseMultiplier * lastTempo / currTempo;
             } else break;
