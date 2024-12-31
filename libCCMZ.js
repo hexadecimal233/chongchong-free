@@ -120,7 +120,7 @@ const libCCMZ = {
         });
         let tickPos = tempoTicks.indexOf(event['tick']);
         let currTempo = baseTempo;
-        let mDuration, mTick = 1;
+        let mDuration = 1, mTick = 1;
         if (tickPos != 0) {
           let thisTick = tempoTicks[tickPos-1];
           let lastTempo = baseTempo;
