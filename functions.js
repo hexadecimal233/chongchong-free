@@ -50,7 +50,7 @@ let getCCMZ = async (musicID, saveDir, downloadMP3, downloadPDF) => {
 
     //解析json
     const PDFlink = detailsJSON['pdf'];//解析PDF链接
-    const ccmzLink = detailsJSON['audition_midi'];//解析CCMZ链接
+    const ccmzLink = detailsJSON['play_json'];//解析CCMZ链接
     const MP3Link = detailsJSON['audition_urtext'];//解析MP3链接
     const musicName = detailsJSON['name'];//获取歌曲名
     const authorcName = detailsJSON['author'];//获取上传者

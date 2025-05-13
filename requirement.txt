@@ -1,0 +1,6 @@
+jszip
+needle
+minimist
+
+
+// nom install *
