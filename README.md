@@ -1,7 +1,8 @@
-### 注意：本人因为时间和精力的缘故将无期限搁置此项目！！不影响使用！
+> [!WARNING]
+> 本项目暂停维护，请寻找像 https://github.com/yfishyon/chongchong-free-python 的类似项目
 
 <p align="center">
-<img src="./icon.png"/>
+<img width=10% src="./icon.png"/>
 </p>
 
 <div align="center">
